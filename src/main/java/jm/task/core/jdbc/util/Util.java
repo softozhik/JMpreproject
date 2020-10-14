@@ -13,12 +13,13 @@ public class Util {
         final String dbpassword = "123456";
 
         Connection dbconnect = DriverManager.getConnection(dburl, dbuser, dbpassword);
-        System.out.println("соединение: " + !dbconnect.isClosed());
+        //System.out.println("соединение: " + !dbconnect.isClosed());
+        dbconnect.setAutoCommit(false);
         return dbconnect;
     }
 
-    public static void disConnection(Connection conn) throws SQLException {
-        conn.close();
-        System.out.println("отключено: " + conn.isClosed());
+    public static void disConnection(Connection dbconnect) throws SQLException {
+        dbconnect.close();
+        //System.out.println("отключено: " + dbconnect.isClosed());
     }
     }

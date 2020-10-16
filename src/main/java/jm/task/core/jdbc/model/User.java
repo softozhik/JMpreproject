@@ -1,12 +1,15 @@
 package jm.task.core.jdbc.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
+@Entity
 @Table
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = 100;
+
     @Id
+    @GeneratedValue
     private Long id;
 
     @Column

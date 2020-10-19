@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 import jm.task.core.jdbc.model.User;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.SessionFactoryImpl;
@@ -14,7 +13,7 @@ import org.hibernate.service.ServiceRegistry;
 
 public class Util {
     // реализуйте настройку соеденения с БД
-    private static ServiceRegistry sr;
+    public static ServiceRegistry sr;
     private static final String dburl = "jdbc:mysql://localhost:3306/jmppdb";
     private static final String dbuser = "jm";
     private static final String dbpassword = "123456";
@@ -40,6 +39,10 @@ public class Util {
                 .setProperty("hibernate.connection.url", dburl)
                 .setProperty("hibernate.connection.username", dbuser)
                 .setProperty("hibernate.connection.password", dbpassword)
+                .setProperty("hibernate.connection.release_mode", "after_statement")
+                .setProperty("current_session_context_class", "thread")
+                .setProperty("hibernate.connection.autoReconnect", "true")
+                .setProperty("log4j.logger.org.hibernate", "error")
                 .addAnnotatedClass(User.class);
         StandardServiceRegistryBuilder sb = new StandardServiceRegistryBuilder().enableAutoClose();
         sb.applySettings(config.getProperties());
@@ -48,9 +51,9 @@ public class Util {
     }
 
     public static void disHiberFactory () {
+//        hiberFactory().close();
         StandardServiceRegistryBuilder.destroy(sr);
     }
-/*
 
     public static void printConnectInfo() {
         try {
@@ -64,6 +67,7 @@ public class Util {
             e.printStackTrace();
         }
     }
-*/
+
+
 
     }

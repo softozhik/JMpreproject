@@ -1,15 +1,14 @@
 package jm.task.core.jdbc.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table
-public class User implements Serializable {
-    private static final long serialVersionUID = 100;
+public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -67,4 +66,5 @@ public class User implements Serializable {
     public String toString() {
         return id + " " + name + " " + lastName + " " + age;
     }
+
 }

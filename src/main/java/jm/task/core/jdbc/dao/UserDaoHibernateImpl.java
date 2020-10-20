@@ -29,13 +29,15 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
+        Transaction t = null;
         try {
             Session session = hiberFactory().openSession();
-            Transaction t = session.beginTransaction();
+            t = session.beginTransaction();
             session.createSQLQuery("DROP TABLE IF EXISTS `User`").executeUpdate();
             t.commit();
             session.close();
         } catch (HibernateException e) {
+            t.rollback();
             e.printStackTrace();
         } finally {
             disHiberFactory();
@@ -44,18 +46,20 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
+        Transaction t = null;
         try {
             Session session = hiberFactory().openSession();
             User currentUser = new User();
             currentUser.setName(name);
             currentUser.setLastName(lastName);
             currentUser.setAge(age);
-            Transaction t = session.beginTransaction();
+            t = session.beginTransaction();
             session.save(currentUser);
             t.commit();
             System.out.println("User с именем - " + name + " добавлен в базу данных");
             session.close();
         } catch (HibernateException e) {
+            t.rollback();
             e.printStackTrace();
         } finally {
             disHiberFactory();
@@ -64,9 +68,10 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void removeUserById(long id) {
+        Transaction t = null;
         try {
             Session session = hiberFactory().openSession();
-            Transaction t = session.beginTransaction();
+            t = session.beginTransaction();
             User currentUser = new User();
             currentUser.setId(id);
             session.delete(currentUser);
@@ -74,6 +79,7 @@ public class UserDaoHibernateImpl implements UserDao {
             session.close();
         } catch (HibernateException e) {
             e.printStackTrace();
+            t.rollback();
         } finally {
             disHiberFactory();
         }
@@ -97,13 +103,15 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void cleanUsersTable() {
+        Transaction t = null;
         try {
             Session session = hiberFactory().openSession();
-            Transaction t = session.beginTransaction();
+            t = session.beginTransaction();
             session.createQuery("delete from User").executeUpdate();
             t.commit();
             session.close();
         } catch (HibernateException e) {
+            t.rollback();
             e.printStackTrace();
         } finally {
             disHiberFactory();
